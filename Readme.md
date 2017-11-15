@@ -1,6 +1,7 @@
 # Учебный проект «Код и Магия» [![Build status][travis-image]][travis-url]
 
 * Студент: [Геворк Геворкян](https://up.htmlacademy.ru/javascript/11/user/497023).
+* Наставник: [Федотов Александр](https://up.htmlacademy.ru/javascript/11/user/247015).
 
 ---
 
