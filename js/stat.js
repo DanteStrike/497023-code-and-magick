@@ -6,7 +6,7 @@
 // width, heigh (object) - ширина и высота соответственно
 // radius (int) - радиус скругления
 // fill, stroke (boolean) - флаги заливки и обводка
-function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+var roundRect = function (ctx, x, y, width, height, radius, fill, stroke) {
   if (typeof stroke === "undefined" ) {
     stroke = true;
   }
@@ -30,6 +30,7 @@ function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
   if (fill) {
     ctx.fill();
   }
+  return;
 }
 
 // Функция отрисовывает голову котэ
@@ -37,7 +38,7 @@ function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
 // x, y (int) - координаты центра
 // width, heigh (object) - ширина и высота головы
 // fill, stroke (boolean) - флаги заливки и обводка
-function nyanCatHead(ctx, x, y, width, height, fill, stroke) {
+var nyanCatHead = function (ctx, x, y, width, height, fill, stroke) {
   if (typeof stroke === "undefined" ) {
     stroke = true;
   }
@@ -98,6 +99,7 @@ function nyanCatHead(ctx, x, y, width, height, fill, stroke) {
   ctx.stroke();
   ctx.fill();
   ctx.closePath();
+  return;
 }
 
 // Функция отрисовывает радугу
@@ -106,9 +108,9 @@ function nyanCatHead(ctx, x, y, width, height, fill, stroke) {
 // width, heigh (object) - ширина и высота рабочей области
 // radius (int) - радиус скругления
 // lineWidth (int) - толщина радужных линий
-function nyanCatRainbow(ctx, x, y, width, height, radius, lineWidth) {
-  var dy;
-  var dx1, dx2;
+var nyanCatRainbow = function (ctx, x, y, width, height, radius, lineWidth) {
+  var dy = 0;
+  var dx1 = 0, dx2 = 0;
   var counter = 0;
   var colorMassive = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'violet'];
 
@@ -137,20 +139,27 @@ function nyanCatRainbow(ctx, x, y, width, height, radius, lineWidth) {
     }
     dy = dy + lineWidth / 2;
   }
+  return;
 }
 
 function textRender(ctx, x, y, text) {
   var current = 0;
   ctx.fillStyle = 'black';
   ctx.font = '16px PT Mono';
-  while (text.indexOf('\n') !== -1, current) {
-    ctx.fillText(substring(current, text.indexOf('\n')), x, y)
-    current = text.indexOf('\n') + 2;
+  while (text.indexOf('\n', current) !== -1) {
+    ctx.fillText(text.substring(current, text.indexOf('\n', current)), x, y)
+    current = text.indexOf('\n', current) + 1;
+    y = y + 24;
   }
+  ctx.fillText(text.substring(current, text.length), x, y);
+  return;
 }
 
-window.renderStatistics = function (ctx, name, times) {
+window.renderStatistics = function (ctx, name, times = [1, 2]) {
   var outText = 'Ура вы победили!\nСписок результатов:';
+  var maxTime = 0;
+  var colorDelta = 0;
+  var i = 0;
 
   ctx.fillStyle = 'white';
   ctx.strokeStyle = 'black';
@@ -164,7 +173,25 @@ window.renderStatistics = function (ctx, name, times) {
   ctx.shadowOffsetX = 0;
   ctx.shadowBlur = 0;
   ctx.shadowOffsetY = 0;
-  nyanCatRainbow(ctx, 100, 10, 100, 270, 20, 10);
+  nyanCatRainbow(ctx, 100, 10, 100, 270, 20, 5);
 
   textRender(ctx, 130, 40, outText);
+
+  maxTime = times.sort(function (a, b) { return b - a;})[0];
+  ctx.strokeStyle = 'black'
+  ctx.lineWidth = 1;
+  for (i = 0; i < times.length; i++) {
+    if (name[i] !== 'Вы') {
+      colorDelta = Math.random();
+      if (colorDelta === 0) { colorDelta += 0.1; } 
+      ctx.fillStyle = 'rgba(0, 0, 255, ' + Math.random() + ')';
+    } else {
+      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+    }
+    ctx.fillRect(120 + 40 * i + 50 * i, 255 - 150 * times[i] / maxTime, 40, 150 * times[i] / maxTime);
+    ctx.strokeRect(120 + 40 * i + 50 * i, 255 - 150 * times[i] / maxTime, 40, 150 * times[i] / maxTime);
+    ctx.fillStyle = 'black';
+    ctx.fillText(Math.round(times[i]), 120 + 40 * i + 50 * i, 255 - 150 * times[i] / maxTime - 15);
+    ctx.fillText(name[i], 120 + 40 * i + 50 * i, 270);
+  }
 }
