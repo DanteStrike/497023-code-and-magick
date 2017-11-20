@@ -143,8 +143,13 @@ var nyanCatRainbow = function (ctx, x, y, width, height, radius, lineWidth) {
   return;
 };
 
+// Функция рендерит многострочный текст
+// ctx (object) - canvas
+// x, y (int) - координаты левого верхнего угла
+// text (string) - строка вывода
 var textRender = function (ctx, x, y, text) {
   var current = 0;
+  
   ctx.fillStyle = 'black';
   ctx.font = '16px PT Mono';
   while (text.indexOf('\n', current) !== -1) {
@@ -177,7 +182,6 @@ window.renderStatistics = function (ctx, name, times) {
   nyanCatRainbow(ctx, 100, 10, 100, 270, 20, 5);
 
   textRender(ctx, 130, 40, outText);
-
   maxTime = times.sort(function (a, b) {
     return b - a;
   })[0];
