@@ -149,7 +149,7 @@ var nyanCatRainbow = function (ctx, x, y, width, height, radius, lineWidth) {
 // text (string) - строка вывода
 var textRender = function (ctx, x, y, text) {
   var current = 0;
-  
+
   ctx.fillStyle = 'black';
   ctx.font = '16px PT Mono';
   while (text.indexOf('\n', current) !== -1) {
