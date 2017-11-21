@@ -190,10 +190,10 @@ window.renderStatistics = function (ctx, name, times) {
   for (i = 0; i < times.length; i++) {
     if (name[i] !== 'Вы') {
       colorDelta = Math.random();
-      if (colorDelta === 0) {
+      if (colorDelta < 0.001) {
         colorDelta += 0.1;
       }
-      ctx.fillStyle = 'rgba(0, 0, 255, ' + Math.random() + ')';
+      ctx.fillStyle = 'rgba(0, 0, 255, ' + colorDelta + ')';
     } else {
       ctx.fillStyle = 'rgba(255, 0, 0, 1)';
     }
