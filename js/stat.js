@@ -1,12 +1,46 @@
 'use strict';
 
+// ДАНО
+var CLOUD_X = 100;
+var CLOUD_Y = 10;
+var CLOUD_WIDTH = 420;
+var CLOUD_HEIGH = 270;
+var CLOUD_CORNER_RADIUS = 20;
+var CLOUD_FILL_COLOR = 'white';
+var CLOUD_STROKE_COLOR = 'black';
+var CLOUD_STROKE_WIDTH = 3;
+
+var BIG_CAT_HEAD_WIDTH = 120;
+var BIG_CAT_HEAD_HEIGHT = 100;
+var RAINBOW_WIDTH = 100;
+var RAINBOW_STROKE_WIDTH = 5;
+var RAINBOW_COLORS = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'violet'];
+
+var SHADOW_X = 10;
+var SHADOW_Y = 10;
+var SHADOW_BLUR = 10;
+var SHADOW_COLOR = 'rgba(0, 0, 0, 0.7)';
+
+var OUT_TEXT = 'Ура вы победили!\nСписок результатов:';
+var FONT_STYLE = '16px PT Mono';
+var FONT_COLOR = 'black';
+
+var HISTOGRAM_COLUMN_WIDTH = 40;
+var HISTOGRAM_COLUMN_HEIGH = 150;
+var HISTOGRAM_COLUMN_BETWEEN = 50;
+var HISTOGRAM_COLUMN_PLAYER_COLOR = 'rgba(255, 0, 0, 1)';
+var HISTOGRAM_COLUMN_STROKE_COLOR = 'black';
+var HISTOGRAM_COLUMN_STROKE_WIDTH = 1;
+
+var EPSILON = 0.0001;
+
 // Функция рисует Прямоугольник со скруглением краев
 // ctx (object) - canvas
 // x, y (int) - координаты левого верхнего угла
 // width, heigh (object) - ширина и высота соответственно
 // radius (int) - радиус скругления
 // fill, stroke (boolean) - флаги заливки и обводка
-var roundRect = function (ctx, x, y, width, height, radius, fill, stroke) {
+var drawRoundRect = function (ctx, x, y, width, height, radius, fill, stroke) {
   if (typeof stroke === 'undefined') {
     stroke = true;
   }
@@ -30,7 +64,6 @@ var roundRect = function (ctx, x, y, width, height, radius, fill, stroke) {
   if (fill) {
     ctx.fill();
   }
-  return;
 };
 
 // Функция отрисовывает голову котэ
@@ -38,7 +71,7 @@ var roundRect = function (ctx, x, y, width, height, radius, fill, stroke) {
 // x, y (int) - координаты центра
 // width, heigh (object) - ширина и высота головы
 // fill, stroke (boolean) - флаги заливки и обводка
-var nyanCatHead = function (ctx, x, y, width, height, fill, stroke) {
+var drawNyanCatHead = function (ctx, x, y, width, height, fill, stroke) {
   if (typeof stroke === 'undefined') {
     stroke = true;
   }
@@ -67,19 +100,18 @@ var nyanCatHead = function (ctx, x, y, width, height, fill, stroke) {
     ctx.fill();
   }
   // Глаза
+  ctx.fillStyle = 'black';
   ctx.shadowColor = 'black';
   ctx.shadowOffsetX = 0;
   ctx.shadowBlur = 0;
   ctx.shadowOffsetY = 0;
   ctx.beginPath();
   ctx.arc(x - width * 7 / 28, y - height * 1 / 6, (width + height) / 22, 0, 2 * Math.PI, false);
-  ctx.fillStyle = 'black';
   ctx.stroke();
   ctx.fill();
   ctx.closePath();
   ctx.beginPath();
   ctx.arc(x + width * 7 / 28, y - height * 1 / 6, (width + height) / 22, 0, 2 * Math.PI, false);
-  ctx.fillStyle = 'black';
   ctx.stroke();
   ctx.fill();
   ctx.closePath();
@@ -95,25 +127,23 @@ var nyanCatHead = function (ctx, x, y, width, height, fill, stroke) {
   // Нос
   ctx.beginPath();
   ctx.arc(x, y, (width + height) / 44, 0, 2 * Math.PI, false);
-  ctx.fillStyle = 'black';
   ctx.stroke();
   ctx.fill();
   ctx.closePath();
-  return;
 };
 
 // Функция отрисовывает радугу
 // ctx (object) - canvas
-// x, y (int) - координаты левого верхнего угла
+// x, y (int) - координаты правого верхнего угла (зацепляется за прмоугольник)
 // width, heigh (object) - ширина и высота рабочей области
 // radius (int) - радиус скругления
 // lineWidth (int) - толщина радужных линий
-var nyanCatRainbow = function (ctx, x, y, width, height, radius, lineWidth) {
+// colorsMassive (object) - массив цветов
+var drawNyanCatRainbow = function (ctx, x, y, width, height, radius, lineWidth, colorsMassive) {
   var dy = 0;
   var dx1 = 0;
   var dx2 = 0;
   var counter = 0;
-  var colorMassive = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'violet'];
 
   if (typeof radius === 'undefined') {
     radius = 5;
@@ -132,75 +162,92 @@ var nyanCatRainbow = function (ctx, x, y, width, height, radius, lineWidth) {
     dx1 = x - width * 3 / 4;
     dx2 = x - width;
     ctx.quadraticCurveTo(dx1, dy + radius, dx2, dy);
-    ctx.strokeStyle = colorMassive[counter];
+    ctx.strokeStyle = colorsMassive[counter];
     ctx.stroke();
     counter++;
-    if (counter % 7 === 0) {
+    if (counter % colorsMassive.length === 0) {
       counter = 0;
     }
     dy = dy + lineWidth / 2;
   }
-  return;
 };
 
 // Функция рендерит многострочный текст
 // ctx (object) - canvas
 // x, y (int) - координаты левого верхнего угла
 // text (string) - строка вывода
-var textRender = function (ctx, x, y, text) {
+// style, color (string) - параметры текста
+var renderText = function (ctx, x, y, text, style, color) {
   var current = 0;
+  var fontLineHeigh = 0;
 
-  ctx.fillStyle = 'black';
-  ctx.font = '16px PT Mono';
+  ctx.font = style;
+  ctx.fillStyle = color;
+  fontLineHeigh = Math.round(Number(style.substring(0, style.indexOf('px', 0))) * 1.5);
+
   while (text.indexOf('\n', current) !== -1) {
     ctx.fillText(text.substring(current, text.indexOf('\n', current)), x, y);
     current = text.indexOf('\n', current) + 1;
-    y = y + 24;
+    y += fontLineHeigh;
   }
   ctx.fillText(text.substring(current, text.length), x, y);
-  return;
 };
 
 window.renderStatistics = function (ctx, name, times) {
-  var outText = 'Ура вы победили!\nСписок результатов:';
   var maxTime = 0;
   var colorDelta = 0;
+  var deltaX = 0;
+  var deltaHeight = 0;
   var i = 0;
-
-  ctx.fillStyle = 'white';
-  ctx.strokeStyle = 'black';
-  ctx.lineWidth = 3;
-  ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
-  ctx.shadowOffsetX = 10;
-  ctx.shadowBlur = 10;
-  ctx.shadowOffsetY = 10;
-  roundRect(ctx, 100, 10, 420, 270, 20, true, true);
-  nyanCatHead(ctx, 520, 240, 120, 100, true, true);
+  // Вывод облачка
+  ctx.fillStyle = CLOUD_FILL_COLOR;
+  ctx.strokeStyle = CLOUD_STROKE_COLOR;
+  ctx.lineWidth = CLOUD_STROKE_WIDTH;
+  ctx.shadowColor = SHADOW_COLOR;
+  ctx.shadowOffsetX = SHADOW_X;
+  ctx.shadowBlur = SHADOW_BLUR;
+  ctx.shadowOffsetY = SHADOW_Y;
+  // Большой котэ
+  drawRoundRect(ctx, CLOUD_X, CLOUD_Y, CLOUD_WIDTH, CLOUD_HEIGH, CLOUD_CORNER_RADIUS, true, true);
+  drawNyanCatHead(ctx, CLOUD_X + 420, CLOUD_Y + 230, BIG_CAT_HEAD_WIDTH, BIG_CAT_HEAD_HEIGHT, true, true);
   ctx.shadowOffsetX = 0;
   ctx.shadowBlur = 0;
   ctx.shadowOffsetY = 0;
-  nyanCatRainbow(ctx, 100, 10, 100, 270, 20, 5);
-
-  textRender(ctx, 130, 40, outText);
-  maxTime = times.sort(function (a, b) {
-    return b - a;
-  })[0];
+  drawNyanCatRainbow(ctx, CLOUD_X, CLOUD_Y, RAINBOW_WIDTH, CLOUD_HEIGH, CLOUD_CORNER_RADIUS, RAINBOW_STROKE_WIDTH, RAINBOW_COLORS);
+  // Маленький котэ
   ctx.strokeStyle = 'black';
   ctx.lineWidth = 1;
+  ctx.fillStyle = 'mistyrose';
+  drawRoundRect(ctx, CLOUD_X + CLOUD_WIDTH - 20 - 70, CLOUD_Y + 10, 70, 40, 3, true, true);
+  ctx.fillStyle = 'orange';
+  drawRoundRect(ctx, CLOUD_X + CLOUD_WIDTH - 10 - 70, CLOUD_Y + 20, 50, 20, 1, true, true);
+  drawNyanCatHead(ctx, CLOUD_X + CLOUD_WIDTH - 20 - 5, CLOUD_Y + 20 + 40 / 2, 30, 30, true, true);
+  drawNyanCatRainbow(ctx, CLOUD_X + CLOUD_WIDTH - 20 - 70, CLOUD_Y + 10, 30, 40, 3, 1, RAINBOW_COLORS);
+  // Вывод текста
+  renderText(ctx, CLOUD_X + 30, CLOUD_Y + 30, OUT_TEXT, FONT_STYLE, FONT_COLOR);
+  for (i = 0; i < times.length; i++) {
+    if (maxTime < times[i]) {
+      maxTime = times[i];
+    }
+  }
+  ctx.strokeStyle = HISTOGRAM_COLUMN_STROKE_COLOR;
+  ctx.lineWidth = HISTOGRAM_COLUMN_STROKE_WIDTH;
   for (i = 0; i < times.length; i++) {
     if (name[i] !== 'Вы') {
       colorDelta = Math.random();
-      if (colorDelta < 0.001) {
+      if (colorDelta < EPSILON) {
         colorDelta += 0.1;
       }
       ctx.fillStyle = 'rgba(0, 0, 255, ' + colorDelta + ')';
     } else {
-      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+      ctx.fillStyle = HISTOGRAM_COLUMN_PLAYER_COLOR;
     }
-    ctx.fillRect(120 + 40 * i + 50 * i, 255 - 150 * times[i] / maxTime, 40, 150 * times[i] / maxTime);
-    ctx.strokeRect(120 + 40 * i + 50 * i, 255 - 150 * times[i] / maxTime, 40, 150 * times[i] / maxTime);
-    ctx.fillStyle = 'black';
-    ctx.fillText(Math.round(times[i]), 120 + 40 * i + 50 * i, 255 - 150 * times[i] / maxTime - 15);
-    ctx.fillText(name[i], 120 + 40 * i + 50 * i, 270);
+    deltaX = HISTOGRAM_COLUMN_WIDTH * i + HISTOGRAM_COLUMN_BETWEEN * i;
+    deltaHeight = HISTOGRAM_COLUMN_HEIGH * times[i] / maxTime;
+    ctx.fillRect(CLOUD_X + deltaX + 20, CLOUD_Y + CLOUD_HEIGH - deltaHeight - 25, HISTOGRAM_COLUMN_WIDTH, deltaHeight);
+    ctx.strokeRect(CLOUD_X + deltaX + 20, CLOUD_Y + CLOUD_HEIGH - deltaHeight - 25, HISTOGRAM_COLUMN_WIDTH, deltaHeight);
+    renderText(ctx, CLOUD_X + deltaX + 20, CLOUD_Y + CLOUD_HEIGH - deltaHeight - 40, Math.round(times[i]).toString(), FONT_STYLE, FONT_COLOR);
+    renderText(ctx, CLOUD_X + deltaX + 20, CLOUD_Y + CLOUD_HEIGH - 10, name[i], FONT_STYLE, FONT_COLOR);
   }
 };
+
