@@ -17,21 +17,21 @@ var wizardGenerator = function (wizards, count) {
       name: WIZARDS_NAMES[Math.floor(Math.random() * 8)] + ' ' + WIZARDS_SURNAMES[Math.floor(Math.random() * 8)],
       coatColor: WIZARDS_COATS_COLORS[Math.floor(Math.random() * 6)],
       eyesColor: WIZARDS_EYES_COLORS[Math.floor(Math.random() * 5)]
-    }
-  } 
-}
+    };
+  }
+};
 
 //  Составление одного DOM-эл-та по объекту JS
 var renderWizard = function (wizard) {
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
   var wizardElement = similarWizardTemplate.cloneNode(true);
-  
+
   wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
   wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
   wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
-  
+
   return wizardElement;
-}
+};
 
 //  Составление DOM-эл-тов по массиву объектов JS
 var renderWizards = function (wizards) {
@@ -41,7 +41,7 @@ var renderWizards = function (wizards) {
     fragment.appendChild(renderWizard(wizards[i]));
   }
   return fragment;
-}
+};
 
 wizardGenerator(wizardsArray, WIZARDS_TOTAL);
 userDialog.classList.remove('hidden');
