@@ -14,9 +14,9 @@ var similarListElement = userDialog.querySelector('.setup-similar-list');
 var wizardGenerator = function (wizards, count) {
   for (var i = 0; i < count; i++) {
     wizards[i] = {
-      name: WIZARDS_NAMES[Math.floor(Math.random() * 8)] + ' ' + WIZARDS_SURNAMES[Math.floor(Math.random() * 8)],
-      coatColor: WIZARDS_COATS_COLORS[Math.floor(Math.random() * 6)],
-      eyesColor: WIZARDS_EYES_COLORS[Math.floor(Math.random() * 5)]
+      name: WIZARDS_NAMES[Math.floor(Math.random() * WIZARDS_NAMES.length)] + ' ' + WIZARDS_SURNAMES[Math.floor(Math.random() * WIZARDS_SURNAMES.length)],
+      coatColor: WIZARDS_COATS_COLORS[Math.floor(Math.random() * WIZARDS_COATS_COLORS.length)],
+      eyesColor: WIZARDS_EYES_COLORS[Math.floor(Math.random() * WIZARDS_EYES_COLORS.length)]
     };
   }
 };
