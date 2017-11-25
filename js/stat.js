@@ -256,7 +256,7 @@ var initHistogramColumnColor = function (ctx, name) {
     ctx.fillStyle = 'rgba(0, 0, 255, ' + colorDelta + ')';
   } else {
     ctx.fillStyle = HISTOGRAM_COLUMN_PLAYER_COLOR;
-  }  
+  }
 };
 
 // Функция отрисовки текущей колонки и текста
@@ -274,7 +274,7 @@ var drawHistogramColumn = function (ctx, time, name, deltaX, deltaHeight) {
   // Вывод текста
   renderText(ctx, CLOUD_X + deltaX + 20, CLOUD_Y + CLOUD_HEIGH - deltaHeight - 40, Math.round(time).toString(), FONT_STYLE, FONT_COLOR);
   renderText(ctx, CLOUD_X + deltaX + 20, CLOUD_Y + CLOUD_HEIGH - 10, name, FONT_STYLE, FONT_COLOR);
-}
+};
 
 // Основная функция отрисовки статистики
 window.renderStatistics = function (ctx, names, times) {
@@ -285,10 +285,10 @@ window.renderStatistics = function (ctx, names, times) {
 
   // Вывод облачка "Большой котэ"
   drawBigNyanCat(ctx);
- 
+
   // Вывод облачка "Маленький котэ"
   drawSmallNyanCat(ctx);
-  
+
   // Вывод вступительного текста
   renderText(ctx, CLOUD_X + 30, CLOUD_Y + 30, OUT_TEXT, FONT_STYLE, FONT_COLOR);
 
@@ -302,7 +302,7 @@ window.renderStatistics = function (ctx, names, times) {
 
   for (i = 0; i < times.length; i++) {
     // 3) Установка цвета текущей колонки
-    initHistogramColumnColor(ctx ,names[i])
+    initHistogramColumnColor(ctx, names[i]);
 
     // 4) Вычисление смещения и относительных размеров текущей колонки
     deltaX = HISTOGRAM_COLUMN_WIDTH * i + HISTOGRAM_COLUMN_BETWEEN * i;
