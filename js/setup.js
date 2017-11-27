@@ -43,7 +43,7 @@ var wizardGenerator = function (count) {
     };
   }
 
-   return wizards;
+  return wizards;
 };
 
 //  Составление одного DOM-эл-та по объекту JS
