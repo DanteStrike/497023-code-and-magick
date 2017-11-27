@@ -10,13 +10,30 @@ var wizardsArray = [];
 var userDialog = document.querySelector('.setup');
 var similarListElement = userDialog.querySelector('.setup-similar-list');
 
+//  Функция генерирует случайное целое число в промежутке от min до max (не включая max)
+//  min, max (int)
+//  return (int)
+var getRandomInt = function (min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+};
+
+//  Функция забирает случайный элемент из массива array
+//  array (obj)
+//  return randomElement (int)
+var getRandomElement = function (array) {
+  var randomElement;
+
+  randomElement = array[getRandomInt(0, array.length)];
+
+  return randomElement;
+};
+
 //  Генератор Случайных Магов
-var wizardGenerator = function (wizards, count) {
   for (var i = 0; i < count; i++) {
     wizards[i] = {
-      name: WIZARDS_NAMES[Math.floor(Math.random() * WIZARDS_NAMES.length)] + ' ' + WIZARDS_SURNAMES[Math.floor(Math.random() * WIZARDS_SURNAMES.length)],
-      coatColor: WIZARDS_COATS_COLORS[Math.floor(Math.random() * WIZARDS_COATS_COLORS.length)],
-      eyesColor: WIZARDS_EYES_COLORS[Math.floor(Math.random() * WIZARDS_EYES_COLORS.length)]
+      name: getRandomElement(WIZARDS_NAMES) + ' ' + getRandomElement(WIZARDS_SURNAMES),
+      coatColor: getRandomElement(WIZARDS_COATS_COLORS),
+      eyesColor: getRandomElement(WIZARDS_EYES_COLORS)
     };
   }
 };
