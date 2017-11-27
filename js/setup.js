@@ -9,6 +9,7 @@ var WIZARDS_TOTAL = 4;
 var wizardsArray = [];
 var userDialog = document.querySelector('.setup');
 var similarListElement = userDialog.querySelector('.setup-similar-list');
+var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
 //  Функция генерирует случайное целое число в промежутке от min до max (не включая max)
 //  min, max (int)
@@ -47,7 +48,6 @@ var wizardGenerator = function (count) {
 
 //  Составление одного DOM-эл-та по объекту JS
 var renderWizard = function (wizard) {
-  var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
   var wizardElement = similarWizardTemplate.cloneNode(true);
 
   wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
