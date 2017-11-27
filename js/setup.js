@@ -29,6 +29,11 @@ var getRandomElement = function (array) {
 };
 
 //  Генератор Случайных Магов
+//  return wizards (obj)
+var wizardGenerator = function (count) {
+  var wizards = [];
+
+  wizards.length = count;
   for (var i = 0; i < count; i++) {
     wizards[i] = {
       name: getRandomElement(WIZARDS_NAMES) + ' ' + getRandomElement(WIZARDS_SURNAMES),
@@ -36,6 +41,8 @@ var getRandomElement = function (array) {
       eyesColor: getRandomElement(WIZARDS_EYES_COLORS)
     };
   }
+
+   return wizards;
 };
 
 //  Составление одного DOM-эл-та по объекту JS
@@ -57,10 +64,11 @@ var renderWizards = function (wizards) {
   for (var i = 0; i < wizards.length; i++) {
     fragment.appendChild(renderWizard(wizards[i]));
   }
+
   return fragment;
 };
 
-wizardGenerator(wizardsArray, WIZARDS_TOTAL);
+wizardsArray = wizardGenerator(WIZARDS_TOTAL);
 userDialog.classList.remove('hidden');
 similarListElement.appendChild(renderWizards(wizardsArray));
 userDialog.querySelector('.setup-similar').classList.remove('hidden');
