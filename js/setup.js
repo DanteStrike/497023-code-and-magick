@@ -30,7 +30,6 @@ var getRandomElement = function (array) {
 var wizardGenerator = function (count) {
   var wizards = [];
 
-  wizards.length = count;
   for (var i = 0; i < count; i++) {
     wizards[i] = {
       name: getRandomElement(WIZARDS_NAMES) + ' ' + getRandomElement(WIZARDS_SURNAMES),
