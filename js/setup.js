@@ -22,11 +22,7 @@ var getRandomInt = function (min, max) {
 //  array (obj)
 //  return randomElement (int)
 var getRandomElement = function (array) {
-  var randomElement;
-
-  randomElement = array[getRandomInt(0, array.length)];
-
-  return randomElement;
+  return array[getRandomInt(0, array.length)];
 };
 
 //  Генератор Случайных Магов
