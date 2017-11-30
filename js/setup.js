@@ -98,12 +98,28 @@ var onSetupOpenClick = function () {
   document.addEventListener('keydown', onSetupEscPress);
 };
 
+var onSetupCloseClick = function () {
   userDialog.classList.add('hidden');
   document.removeEventListener('keydown', onSetupEscPress);
 };
 
+//  Ф-ции Валидации
+
+var setupUserNameInvalid = function (evt) {
+  //  браузер Edge не поддерживает атрибут minlength
+  var target = evt.target;
+  if (target.value.length < 2) {
+    target.setCustomValidity('Имя должно состоять минимум из 2-х символов');
+  } else if (setupUserName.validity.tooLong) {
+    setupUserName.setCustomValidity('Имя не должно превышать 25-ти символов');
+  } else if (setupUserName.validity.valueMissing) {
+    setupUserName.setCustomValidity('Обязательное поле');
+  } else {
+    setupUserName.setCustomValidity('');
+  }
 };
 
+//  ИНИЦИАЛИЗАЦИЯ
 
 setupOpen.addEventListener('click', onSetupOpenClick);
 setupOpen.addEventListener('keydown', onSetupOpenEnterPress);
@@ -111,6 +127,7 @@ setupOpen.addEventListener('keydown', onSetupOpenEnterPress);
 setupClose.addEventListener('click', onSetupCloseClick);
 setupClose.addEventListener('keydown', onSetupCloseEnterPress);
 
+setupUserName.addEventListener('invalid', setupUserNameInvalid);
 
 wizardsArray = wizardGenerator(WIZARDS_TOTAL);
 similarListElement.appendChild(renderWizards(wizardsArray));
