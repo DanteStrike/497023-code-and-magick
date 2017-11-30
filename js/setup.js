@@ -15,6 +15,7 @@ var setupOpen = document.querySelector('.setup-open');
 var userDialog = document.querySelector('.setup');
 var setupClose = userDialog.querySelector('.setup-close');
 var setupSubmit = userDialog.querySelector('.setup-submit');
+var setupUserName = userDialog.querySelector('.setup-user-name');
 var similarListElement = userDialog.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
@@ -78,12 +79,6 @@ var onSetupOpenEnterPress = function (evt) {
   }
 };
 
-var onSetupSubmitEnterPress = function () {
-  if (evt.keyCode === ENTER_KEYCODE) {
-    onSetupSubmitClick();
-  }
-};
-
 var onSetupEscPress = function(evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     onSetupCloseClick();
@@ -103,23 +98,15 @@ var onSetupOpenClick = function () {
   document.addEventListener('keydown', onSetupEscPress);
 };
 
-var onSetupSubmitClick = function () {
   userDialog.classList.add('hidden');
   document.removeEventListener('keydown', onSetupEscPress);
 };
 
-var onSetupCloseClick = function () {
-  userDialog.classList.add('hidden');
-  document.removeEventListener('keydown', onSetupEscPress);
 };
 
-//  ИНИЦИАЛИЗАЦИЯ Событий
 
 setupOpen.addEventListener('click', onSetupOpenClick);
 setupOpen.addEventListener('keydown', onSetupOpenEnterPress);
-
-setupSubmit.addEventListener('click', onSetupSubmitClick);
-setupSubmit.addEventListener('keydown', onSetupSubmitEnterPress);
 
 setupClose.addEventListener('click', onSetupCloseClick);
 setupClose.addEventListener('keydown', onSetupCloseEnterPress);
