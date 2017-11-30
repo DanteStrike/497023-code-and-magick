@@ -17,7 +17,6 @@ var setupOpen = document.querySelector('.setup-open');
 
 var userDialog = document.querySelector('.setup');
 var setupClose = userDialog.querySelector('.setup-close');
-var setupSubmit = userDialog.querySelector('.setup-submit');
 var setupUserName = userDialog.querySelector('.setup-user-name');
 var setupWizardCoat = userDialog.querySelector('.setup-wizard .wizard-coat');
 var setupWizardEyes = userDialog.querySelector('.setup-wizard .wizard-eyes');
@@ -40,15 +39,11 @@ var getRandomElement = function (array) {
   return array[getRandomInt(0, array.length)];
 };
 
-var getException = function (value) {
-  return value === exceptionElement ? 0 : 1;
-};
-
 var getRandomElementException = function (exceptionElement, array) {
   var result = array.filter(function (value) {
     return value === exceptionElement ? 0 : 1;
   })[getRandomInt(0, array.length - 1)];
-  return  result;
+  return result;
 };
 
 //  Генератор Случайных Магов
@@ -97,7 +92,7 @@ var onSetupOpenEnterPress = function (evt) {
   }
 };
 
-var onSetupEscPress = function(evt) {
+var onSetupEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     onSetupCloseClick();
   }
@@ -124,17 +119,17 @@ var onSetupCloseClick = function () {
 var onSetupWizardCoatClick = function () {
   var currentCoatFill = setupWizardCoat.style.fill;
   setupWizardCoat.style.fill = getRandomElementException(currentCoatFill, WIZARDS_COATS_COLORS);
-}
+};
 
 var onSetupWizardEyesClick = function () {
   var currentEyesFill = setupWizardEyes.style.fill;
   setupWizardEyes.style.fill = getRandomElementException(currentEyesFill, WIZARDS_EYES_COLORS);
-}
+};
 
 var onSetupWizardFireballClick = function () {
   var currentFireballBackgroundColor = setupWizardFireball.style.backgroundColor;
   setupWizardFireball.style.backgroundColor = getRandomElementException(currentFireballBackgroundColor, WIZARDS_FIREBALL_COLORS);
-}
+};
 
 //  Ф-ции Валидации
 
