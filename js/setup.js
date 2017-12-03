@@ -5,7 +5,7 @@ var WIZARDS_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', '
 var WIZARDS_COATS_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var WIZARDS_EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 //  Перевел HEX в RGB - для правильной работы функции getRandomElementException
-var WIZARDS_FIREBALL_COLORS = ['rgb(238,72,48)', 'rgb(48,168,238)', 'rgb(92,230,192)', 'rgb(232,72,213)', 'rgb(230,232,72)'];
+var WIZARDS_FIREBALL_COLORS = ['rgb(238, 72, 48)', 'rgb(48, 168, 238)', 'rgb(92, 230, 192)', 'rgb(232, 72, 213)', 'rgb(230, 232, 72)'];
 var WIZARDS_TOTAL = 4;
 
 var ESC_KEYCODE = 27;
