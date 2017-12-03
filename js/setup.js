@@ -41,10 +41,12 @@ var getRandomElement = function (array) {
 
 var getRandomElementException = function (exceptionElement, array) {
   //  Фильтр создает новый массив, не трогая сам array
-  var result = array.filter(function (value) {
+  var filteredArray = array.filter(function (value) {
     return value === exceptionElement ? 0 : 1;
-  })[getRandomInt(0, array.length - 1)];
-  return result;
+  });
+  var newRandomElement = filteredArray[getRandomInt(0, filteredArray.length)];
+
+  return newRandomElement;
 };
 
 //  Генератор Случайных Магов
