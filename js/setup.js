@@ -44,9 +44,9 @@ var getRandomElementException = function (exceptionElement, array) {
   var filteredArray = array.filter(function (value) {
     return value === exceptionElement ? 0 : 1;
   });
-  var newRandomElement = filteredArray[getRandomInt(0, filteredArray.length)];
+  var randomElement = getRandomElement(filteredArray);
 
-  return newRandomElement;
+  return randomElement;
 };
 
 //  Генератор Случайных Магов
